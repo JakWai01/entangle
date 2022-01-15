@@ -1,6 +1,6 @@
 # entangle
 
-A distributed peer-to-peer filesystem that runs everywhere.
+A distributed peer-to-peer filesystem.
 
 [![Go Reference](https://pkg.go.dev/badge/github.com/alphahorizonio/entangle.svg)](https://pkg.go.dev/github.com/alphahorizonio/entangle)
 
