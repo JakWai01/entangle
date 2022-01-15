@@ -19,13 +19,13 @@ go install github.com/alphahorizonio/entangle
 Start a server containing the remote file which is used as a backend.
 
 ```shell
-entangle client --metadata /tmp/stfs-metadata.sqlite --mountpoint $HOME/Downloads/mount
+entangle client --metadata /tmp/stfs-metadata-$(date +%s).sqlite --mountpoint $HOME/Downloads/mount
 ```
 
 Start a client to mount the fuse and access the remote backend.
 
 ```shell
-entangle server --file /tmp/serverfile.tar
+entangle server
 ```
 
 For more information, consider using `entangle --help`.
