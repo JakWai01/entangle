@@ -36,6 +36,8 @@ var clientCmd = &cobra.Command{
 	Short: "Start entangle client instance",
 	RunE: func(cmd *cobra.Command, args []string) error {
 
+		os.MkdirAll(viper.GetString(mountpointFlag), os.ModePerm)
+
 		onOpen := make(chan struct{})
 		manager := handlers.NewClientManager(func() {
 			onOpen <- struct{}{}
@@ -177,7 +179,14 @@ var clientCmd = &cobra.Command{
 }
 
 func init() {
-	clientCmd.PersistentFlags().String(mountpointFlag, "/tmp/mount", "Mountpoint to use for FUSE")
+	homeDir, err := os.UserHomeDir()
+	if err != nil {
+		panic(err)
+	}
+
+	mountPath := filepath.Join(homeDir, filepath.Join("Documents", "mount"))
+
+	clientCmd.PersistentFlags().String(mountpointFlag, mountPath, "Mountpoint to use for FUSE")
 	clientCmd.PersistentFlags().Int(recordSizeFlag, 20, "Amount of 512-bit blocks per second")
 	clientCmd.PersistentFlags().String(writeCacheFlag, filepath.Join(os.TempDir(), "stfs-write-cache"), "Directory to use for write cache")
 
