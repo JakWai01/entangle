@@ -11,7 +11,7 @@ A distributed peer-to-peer filesystem.
 ## Installation
 
 ```bash
-go install github.com/alphahorizonio/entangle
+go install github.com/alphahorizonio/entangle@latest
 ```
 
 ## Usage 
