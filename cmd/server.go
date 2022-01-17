@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"log"
 	"os"
 	"path/filepath"
 
@@ -13,7 +14,7 @@ import (
 )
 
 const (
-	serverFile = "file"
+	driveFlag = "drive"
 )
 
 var serverCmd = &cobra.Command{
@@ -30,16 +31,9 @@ var serverCmd = &cobra.Command{
 
 		var file *os.File
 
-		dir, err := os.MkdirTemp(os.TempDir(), "serverfiles-*")
-		if err != nil {
-			panic(err)
-		}
-
-		myFile := filepath.Join(dir, "serverfile.tar")
-
 		callback := callbacks.NewCallback()
 
-		cm.Connect("test", callback.GetServerCallback(*cm, file, myFile))
+		cm.Connect(viper.GetString(signalFlag), viper.GetString(communityKey), callback.GetServerCallback(*cm, file, viper.GetString(driveFlag)))
 
 		<-onOpen
 
@@ -49,7 +43,19 @@ var serverCmd = &cobra.Command{
 }
 
 func init() {
-	viper.SetEnvPrefix("sile-fystem")
+	dir, err := os.MkdirTemp(os.TempDir(), "serverfiles-*")
+	if err != nil {
+		panic(err)
+	}
+
+	defaultDrive := filepath.Join(dir, "serverfile.tar")
+
+	serverCmd.PersistentFlags().String(driveFlag, defaultDrive, "Specify drive")
+
+	if err := viper.BindPFlags(serverCmd.PersistentFlags()); err != nil {
+		log.Fatal("could not bind flags:", err)
+	}
+
 	viper.AutomaticEnv()
 
 	rootCmd.AddCommand(serverCmd)

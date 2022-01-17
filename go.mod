@@ -3,11 +3,11 @@ module github.com/alphahorizonio/entangle
 go 1.17
 
 require (
-	github.com/JakWai01/sile-fystem v0.0.0-20220114195711-cab6bb484bec
-	github.com/alphahorizonio/libentangle v0.0.0-20220114210204-661e839ebc2a
+	github.com/JakWai01/sile-fystem v0.0.0-20220116194159-11de7528c6f2
+	github.com/alphahorizonio/libentangle v0.0.0-20220117093907-2cea6f199986
 	github.com/fclairamb/go-log v0.2.0
 	github.com/jacobsa/fuse v0.0.0-20220109145407-1b9b09fd17a4
-	github.com/pojntfx/stfs v0.0.0-20220114203619-4a3c5d981eac
+	github.com/pojntfx/stfs v0.0.0-20220116225047-25cacd34d89f
 	github.com/spf13/cobra v1.3.0
 	github.com/spf13/viper v1.10.1
 	github.com/volatiletech/sqlboiler/v4 v4.8.3
@@ -75,10 +75,10 @@ require (
 	gopkg.in/gorp.v1 v1.7.2 // indirect
 	gopkg.in/ini.v1 v1.66.2 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
-	lukechampine.com/uint128 v1.1.1 // indirect
+	lukechampine.com/uint128 v1.2.0 // indirect
 	modernc.org/cc/v3 v3.35.22 // indirect
-	modernc.org/ccgo/v3 v3.14.0 // indirect
-	modernc.org/libc v1.13.2 // indirect
+	modernc.org/ccgo/v3 v3.15.1 // indirect
+	modernc.org/libc v1.14.1 // indirect
 	modernc.org/mathutil v1.4.1 // indirect
 	modernc.org/memory v1.0.5 // indirect
 	modernc.org/opt v0.1.1 // indirect

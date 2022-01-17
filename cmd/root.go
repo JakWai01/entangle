@@ -14,6 +14,7 @@ const (
 	communityKey = "community"
 	verboseFlag  = "verbose"
 	metadataFlag = "metadata"
+	signalFlag   = "signal"
 )
 
 var rootCmd = &cobra.Command{
@@ -31,10 +32,11 @@ func Execute() error {
 	}
 	metadataPath := filepath.Join(home, ".local", "share", "stfs", "var", "lib", "stfs", "metadata.sqlite")
 
-	rootCmd.PersistentFlags().String(communityKey, "testCommunityName", "Community to join")
+	rootCmd.PersistentFlags().StringP(communityKey, "c", "test", "Community to join")
 	rootCmd.PersistentFlags().IntP(verboseFlag, "v", 2, fmt.Sprintf("Verbosity level (default %v)", 2))
 	rootCmd.PersistentFlags().StringP(metadataFlag, "m", metadataPath, "Metadata database to use")
-	// Bind env variables
+	rootCmd.PersistentFlags().StringP(signalFlag, "s", "0.0.0.0:9090", "Address of signaling service")
+
 	if err := viper.BindPFlags(rootCmd.PersistentFlags()); err != nil {
 		log.Fatal("could not bind flags:", err)
 	}

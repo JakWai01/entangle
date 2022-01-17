@@ -13,6 +13,7 @@ import (
 	"github.com/pojntfx/stfs/pkg/cache"
 	"github.com/pojntfx/stfs/pkg/config"
 	"github.com/pojntfx/stfs/pkg/fs"
+	"github.com/pojntfx/stfs/pkg/mtio"
 	"github.com/pojntfx/stfs/pkg/operations"
 	"github.com/pojntfx/stfs/pkg/persisters"
 	"github.com/spf13/cobra"
@@ -50,9 +51,11 @@ var clientCmd = &cobra.Command{
 
 		callback := callbacks.NewCallback()
 
-		go cm.Connect("test", callback.GetClientCallback(*rmFile))
+		go cm.Connect(viper.GetString(signalFlag), viper.GetString(communityKey), callback.GetClientCallback(*rmFile))
 
 		<-onOpen
+
+		mt := mtio.MagneticTapeIO{}
 
 		metadataPersister := persisters.NewMetadataPersister(viper.GetString(metadataFlag))
 		if err := metadataPersister.Open(); err != nil {
@@ -93,17 +96,7 @@ var clientCmd = &cobra.Command{
 			},
 			CloseReader: rmFile.Close,
 
-			GetDrive: func() (config.DriveConfig, error) {
-				if err := rmFile.Open(true); err != nil {
-					return config.DriveConfig{}, err
-				}
-
-				return config.DriveConfig{
-					DriveIsRegular: true,
-					Drive:          rmFile,
-				}, nil
-			},
-			CloseDrive: rmFile.Close,
+			MagneticTapeIO: mt,
 		}
 		readCryptoConfig := config.CryptoConfig{}
 
@@ -191,7 +184,6 @@ func init() {
 	if err := viper.BindPFlags(clientCmd.PersistentFlags()); err != nil {
 		log.Fatal("could not bind flags:", err)
 	}
-	viper.SetEnvPrefix("sile-fystem")
 	viper.AutomaticEnv()
 
 	rootCmd.AddCommand(clientCmd)
