@@ -25,7 +25,7 @@ entangle server
 Start a client to mount the fuse and access the remote backend.
 
 ```shell
-entangle client --metadata /tmp/stfs-metadata-$(date +%s).sqlite
+entangle client
 ```
 
 For more information, consider using `entangle --help`.

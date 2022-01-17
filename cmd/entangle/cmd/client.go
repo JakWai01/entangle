@@ -59,6 +59,12 @@ var clientCmd = &cobra.Command{
 
 		mt := mtio.MagneticTapeIO{}
 
+		if err := os.MkdirAll(filepath.Dir(viper.GetString(metadataFlag)), os.ModePerm); err != nil {
+			panic(err)
+		}
+
+		os.Create(viper.GetString(metadataFlag))
+
 		metadataPersister := persisters.NewMetadataPersister(viper.GetString(metadataFlag))
 		if err := metadataPersister.Open(); err != nil {
 			panic(err)
