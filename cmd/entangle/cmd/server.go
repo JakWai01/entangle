@@ -33,7 +33,7 @@ var serverCmd = &cobra.Command{
 
 		callback := callbacks.NewCallback()
 
-		cm.Connect(viper.GetString(signalFlag), viper.GetString(communityKey), callback.GetServerCallback(*cm, file, viper.GetString(driveFlag)))
+		cm.Connect(viper.GetString(signalFlag), viper.GetString(communityKey), callback.GetServerCallback(*cm, file, viper.GetString(driveFlag)), callback.GetErrorCallback())
 
 		<-onOpen
 
