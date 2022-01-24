@@ -171,6 +171,8 @@ var clientCmd = &cobra.Command{
 		serve := filesystem.NewFileSystem(helpers.CurrentUid(), helpers.CurrentGid(), viper.GetString(mountpointFlag), root, l, fs)
 		cfg := &fuse.MountConfig{}
 
+		fuse.Unmount(viper.GetString(mountpointFlag))
+
 		mfs, err := fuse.Mount(viper.GetString(mountpointFlag), serve, cfg)
 		if err != nil {
 			log.Fatalf("Mount: %v", err)
