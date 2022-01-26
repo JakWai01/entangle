@@ -51,9 +51,9 @@ var clientCmd = &cobra.Command{
 
 		rmFile := networking.NewRemoteFile(*cm)
 
-		callback := callbacks.NewCallback()
+		callback := callbacks.NewCallback(l)
 
-		go cm.Connect(viper.GetString(signalFlag), viper.GetString(communityKey), callback.GetClientCallback(*rmFile), callback.GetErrorCallback())
+		go cm.Connect(viper.GetString(signalFlag), viper.GetString(communityKey), callback.GetClientCallback(*rmFile), callback.GetErrorCallback(), l)
 
 		<-onOpen
 

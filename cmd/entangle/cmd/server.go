@@ -8,6 +8,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
+	"github.com/alphahorizonio/entangle/internal/logging"
 	"github.com/alphahorizonio/libentangle/pkg/callbacks"
 	"github.com/alphahorizonio/libentangle/pkg/handlers"
 	"github.com/alphahorizonio/libentangle/pkg/networking"
@@ -31,9 +32,11 @@ var serverCmd = &cobra.Command{
 
 		var file *os.File
 
-		callback := callbacks.NewCallback()
+		l := logging.NewJSONLogger(viper.GetInt(verboseFlag))
 
-		cm.Connect(viper.GetString(signalFlag), viper.GetString(communityKey), callback.GetServerCallback(*cm, file, viper.GetString(driveFlag)), callback.GetErrorCallback())
+		callback := callbacks.NewCallback(l)
+
+		cm.Connect(viper.GetString(signalFlag), viper.GetString(communityKey), callback.GetServerCallback(*cm, file, viper.GetString(driveFlag)), callback.GetErrorCallback(), l)
 
 		<-onOpen
 

@@ -83,6 +83,8 @@ github.com/alphahorizonio/libentangle v0.1.4-alpha h1:dqM1mcDELYLrFtZAguLnBQ6uIy
 github.com/alphahorizonio/libentangle v0.1.4-alpha/go.mod h1:Z7tARgH/buCd/TX+A64OZRayYpHs58Q7TIjHqO+cCWM=
 github.com/alphahorizonio/libentangle v0.1.4-alpha.0.20220122182949-19c7addf3f85 h1:qxFihnakD/5VP41D+56oT98Wn08OrVwS0FO7w2jqNXY=
 github.com/alphahorizonio/libentangle v0.1.4-alpha.0.20220122182949-19c7addf3f85/go.mod h1:Z7tARgH/buCd/TX+A64OZRayYpHs58Q7TIjHqO+cCWM=
+github.com/alphahorizonio/libentangle v0.1.4-alpha.0.20220126132034-05320034ff9f h1:qLRY/BTD4S7xM46N8zblvq3uZexp7ZIfBQWayhNaKnU=
+github.com/alphahorizonio/libentangle v0.1.4-alpha.0.20220126132034-05320034ff9f/go.mod h1:ZWK1Rp0fhYCMHtTCDKIiccGbA4YWPyZGD1WGG+I3VWU=
 github.com/andybalholm/brotli v1.0.4 h1:V7DdXeJtZscaqfNuAdSRuRFzuiKlHSC/Zh3zl9qY3JY=
 github.com/andybalholm/brotli v1.0.4/go.mod h1:fO7iG3H7G2nSZ7m0zPUDn85XEX2GTukHGRSepvi9Eig=
 github.com/antihax/optional v1.0.0/go.mod h1:uupD/76wgC+ih3iEmQUL+0Ugr19nfwCT1kdvxnR2qWY=
@@ -505,6 +507,8 @@ github.com/pojntfx/stfs v0.0.0-20220116225047-25cacd34d89f h1:v1cd1vHmn7YAZ9tG3B
 github.com/pojntfx/stfs v0.0.0-20220116225047-25cacd34d89f/go.mod h1:/4zCkcsXeFTZR3vZ4zqXceV74FXIbVq1l9rJxECQwT8=
 github.com/pojntfx/stfs v0.0.0-20220122172602-cbbd2648acf9 h1:KRV8y7zmG926jMd8F6Iw4W9ZBoxCFhGTxQdGXUlyBbo=
 github.com/pojntfx/stfs v0.0.0-20220122172602-cbbd2648acf9/go.mod h1:/4zCkcsXeFTZR3vZ4zqXceV74FXIbVq1l9rJxECQwT8=
+github.com/pojntfx/stfs v0.0.0-20220125235042-a5a41c03319d h1:77JBXgfA0DJAqWR/CT+yD2ekXKehRruERd9ZuNhcXGw=
+github.com/pojntfx/stfs v0.0.0-20220125235042-a5a41c03319d/go.mod h1:/4zCkcsXeFTZR3vZ4zqXceV74FXIbVq1l9rJxECQwT8=
 github.com/posener/complete v1.1.1/go.mod h1:em0nMJCgc9GFtwrmVmEMR/ZL6WyhyjMBndrE9hABlRI=
 github.com/posener/complete v1.2.3/go.mod h1:WZIdtGGp+qx0sLrYKtIRAruyNpv6hFCicSgv7Sy7s/s=
 github.com/prometheus/client_golang v0.9.1/go.mod h1:7SWBe2y4D6OKWSNQJUaRYU/AaXPKyh/dDVn+NZz0KFw=

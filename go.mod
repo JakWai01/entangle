@@ -3,20 +3,20 @@ module github.com/alphahorizonio/entangle
 go 1.17
 
 require (
-	github.com/JakWai01/sile-fystem v0.1.4-alpha
 	github.com/fclairamb/go-log v0.2.0
 	github.com/jacobsa/fuse v0.0.0-20220109145407-1b9b09fd17a4
-	github.com/pojntfx/stfs v0.0.0-20220122172602-cbbd2648acf9
 	github.com/spf13/cobra v1.3.0
 	github.com/spf13/viper v1.10.1
 	github.com/volatiletech/sqlboiler/v4 v4.8.3
 )
 
+require github.com/alphahorizonio/libentangle v0.1.4-alpha.0.20220126132034-05320034ff9f // indirect
+
 require (
 	aead.dev/minisign v0.2.0 // indirect
 	filippo.io/age v1.0.0 // indirect
+	github.com/JakWai01/sile-fystem v0.1.4-alpha
 	github.com/ProtonMail/go-crypto v0.0.0-20220113124808-70ae35bab23f // indirect
-	github.com/alphahorizonio/libentangle v0.1.4-alpha.0.20220122182949-19c7addf3f85 // indirect
 	github.com/andybalholm/brotli v1.0.4 // indirect
 	github.com/cosnicolaou/pbzip2 v1.0.1 // indirect
 	github.com/dsnet/compress v0.0.1 // indirect
@@ -54,6 +54,7 @@ require (
 	github.com/pion/turn/v2 v2.0.6 // indirect
 	github.com/pion/udp v0.1.1 // indirect
 	github.com/pion/webrtc/v3 v3.1.17 // indirect
+	github.com/pojntfx/stfs v0.0.0-20220125235042-a5a41c03319d // indirect
 	github.com/remyoudompheng/bigfft v0.0.0-20200410134404-eec4a21b6bb0 // indirect
 	github.com/rubenv/sql-migrate v1.0.0 // indirect
 	github.com/spf13/afero v1.8.0 // indirect
