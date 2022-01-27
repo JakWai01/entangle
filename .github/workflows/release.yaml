@@ -10,15 +10,6 @@ jobs:
         uses: actions/setup-go@v2
         with:
           go-version: "1.17.6"
-      - name: Install dependencies
-        run: |
-          go version
-          go get -u github.com/alphahorizonio/libentangle@latest
-          go get -u github.com/fclairamb/go-log@latest
-          go get -u github.com/jacobsa/fuse@latest
-          go get -u github.com/spf13/cobra@latest
-          go get -u github.com/spf13/viper@latest
-          go get -u github.com/volatiletech/sqlboiler@latest
       - name: Build 
         run: go build .
       - name: Publish pre-release to GitHub releases
