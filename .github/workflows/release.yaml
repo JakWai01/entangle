@@ -23,7 +23,7 @@ jobs:
         run: go build .
       - name: Publish pre-release to GitHub releases
         if: ${{ github.ref == 'refs/heads/main' }}
-        uses: marrvinpinto/action-automatic-releases@latest
+        uses: marvinpinto/action-automatic-releases@latest
         with: 
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: unstable
