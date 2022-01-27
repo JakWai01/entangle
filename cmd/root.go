@@ -21,7 +21,7 @@ var rootCmd = &cobra.Command{
 	Use:   "entangle",
 	Short: "A CLI to serve or mount a filesystem",
 	Long: `A CLI to serve or mount a filesystem.
-	For more information, please visit https://github.com/alphahorizon/entangle`,
+	For more information, please visit https://github.com/alphahorizonio/entangle`,
 }
 
 func Execute() error {
