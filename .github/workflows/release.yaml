@@ -1,0 +1,31 @@
+name: CICD
+on: push
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+      - uses: actions/checkout@v2
+      - name: Setup Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: "1.17.6"
+      - name: Install dependencies
+        run: |
+          go version
+          go get -u github.com/alphahorizonio/libentangle v0.1.4-alpha.0.20220126132034-05320034ff9f
+          go get -u github.com/fclairamb/go-log v0.2.0
+          go get -u github.com/jacobsa/fuse v0.0.0-20220109145407-1b9b09fd17a4
+          go get -u github.com/spf13/cobra v1.3.0
+          go get -u github.com/spf13/viper v1.10.1
+          go get -u github.com/volatiletech/sqlboiler/v4 v4.8.3
+      - name: Build 
+        run: go build .
+      - name: Publish pre-release to GitHub releases
+        if: ${{ github.ref == 'refs/heads/main' }}
+        uses: marrvinpinto/action-automatic-releases@latest
+        with: 
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: unstable
+          prerelease: true
+          files: entangle
