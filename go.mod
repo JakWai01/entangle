@@ -3,6 +3,7 @@ module github.com/alphahorizonio/entangle
 go 1.17
 
 require (
+	github.com/alphahorizonio/libentangle v0.1.4-alpha.0.20220126132034-05320034ff9f
 	github.com/fclairamb/go-log v0.2.0
 	github.com/jacobsa/fuse v0.0.0-20220109145407-1b9b09fd17a4
 	github.com/spf13/cobra v1.3.0
@@ -10,18 +11,16 @@ require (
 	github.com/volatiletech/sqlboiler/v4 v4.8.3
 )
 
-require github.com/alphahorizonio/libentangle v0.1.4-alpha.0.20220126132034-05320034ff9f // indirect
-
 require (
 	aead.dev/minisign v0.2.0 // indirect
 	filippo.io/age v1.0.0 // indirect
-	github.com/JakWai01/sile-fystem v0.1.4-alpha
 	github.com/ProtonMail/go-crypto v0.0.0-20220113124808-70ae35bab23f // indirect
 	github.com/andybalholm/brotli v1.0.4 // indirect
 	github.com/cosnicolaou/pbzip2 v1.0.1 // indirect
 	github.com/dsnet/compress v0.0.1 // indirect
 	github.com/friendsofgo/errors v0.9.2 // indirect
 	github.com/fsnotify/fsnotify v1.5.1 // indirect
+	github.com/go-playground/universal-translator v0.18.0 // indirect
 	github.com/gofrs/uuid v4.2.0+incompatible // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
@@ -30,6 +29,8 @@ require (
 	github.com/kballard/go-shellquote v0.0.0-20180428030007-95032a82bc51 // indirect
 	github.com/klauspost/compress v1.14.1 // indirect
 	github.com/klauspost/pgzip v1.2.5 // indirect
+	github.com/kr/text v0.2.0 // indirect
+	github.com/leodido/go-urn v1.2.1 // indirect
 	github.com/magiconair/properties v1.8.5 // indirect
 	github.com/mattetti/filebuffer v1.0.1 // indirect
 	github.com/mattn/go-isatty v0.0.14 // indirect
@@ -40,7 +41,6 @@ require (
 	github.com/pion/datachannel v1.5.2 // indirect
 	github.com/pion/dtls/v2 v2.1.0 // indirect
 	github.com/pion/ice/v2 v2.1.18 // indirect
-	github.com/pion/interceptor v0.1.7 // indirect
 	github.com/pion/logging v0.2.2 // indirect
 	github.com/pion/mdns v0.0.5 // indirect
 	github.com/pion/randutil v0.1.0 // indirect
@@ -54,7 +54,6 @@ require (
 	github.com/pion/turn/v2 v2.0.6 // indirect
 	github.com/pion/udp v0.1.1 // indirect
 	github.com/pion/webrtc/v3 v3.1.17 // indirect
-	github.com/pojntfx/stfs v0.0.0-20220125235042-a5a41c03319d // indirect
 	github.com/remyoudompheng/bigfft v0.0.0-20200410134404-eec4a21b6bb0 // indirect
 	github.com/rubenv/sql-migrate v1.0.0 // indirect
 	github.com/spf13/afero v1.8.0 // indirect
@@ -68,7 +67,6 @@ require (
 	github.com/volatiletech/strmangle v0.0.1 // indirect
 	golang.org/x/crypto v0.0.0-20220112180741-5e0467b6c7ce // indirect
 	golang.org/x/mod v0.5.1 // indirect
-	golang.org/x/net v0.0.0-20220121210141-e204ce36a2ba // indirect
 	golang.org/x/sys v0.0.0-20220114195835-da31bd327af9 // indirect
 	golang.org/x/text v0.3.7 // indirect
 	golang.org/x/tools v0.1.8 // indirect
@@ -87,4 +85,11 @@ require (
 	modernc.org/strutil v1.1.1 // indirect
 	modernc.org/token v1.0.0 // indirect
 	nhooyr.io/websocket v1.8.7 // indirect
+)
+
+require (
+	github.com/JakWai01/sile-fystem v0.1.4-alpha
+	github.com/pion/interceptor v0.1.7 // indirect
+	github.com/pojntfx/stfs v0.0.0-20220125235042-a5a41c03319d
+	golang.org/x/net v0.0.0-20220121210141-e204ce36a2ba // indirect
 )
