@@ -41,7 +41,6 @@ var serverCmd = &cobra.Command{
 		<-onOpen
 
 		select {}
-
 	},
 }
 
@@ -53,9 +52,9 @@ func init() {
 
 	defaultDrive := filepath.Join(dir, "serverfile.tar")
 
-	serverCmd.PersistentFlags().String(driveFlag, defaultDrive, "Specify drive")
+	serverCmd.Flags().String(driveFlag, defaultDrive, "Specify drive")
 
-	if err := viper.BindPFlags(serverCmd.PersistentFlags()); err != nil {
+	if err := viper.BindPFlags(serverCmd.Flags()); err != nil {
 		log.Fatal("could not bind flags:", err)
 	}
 

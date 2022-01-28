@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"os"
 	"path/filepath"
@@ -16,48 +17,40 @@ import (
 	"github.com/pojntfx/stfs/pkg/mtio"
 	"github.com/pojntfx/stfs/pkg/operations"
 	"github.com/pojntfx/stfs/pkg/persisters"
+	"github.com/pojntfx/stfs/pkg/tape"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"github.com/volatiletech/sqlboiler/v4/boil"
-
-	"github.com/alphahorizonio/libentangle/pkg/callbacks"
-	"github.com/alphahorizonio/libentangle/pkg/handlers"
-	"github.com/alphahorizonio/libentangle/pkg/networking"
 )
 
 const (
-	mountpointFlag = "mountpoint"
-	recordSizeFlag = "recordSize"
-	writeCacheFlag = "writeCache"
+	driver     = "driver"
+	recordSize = "recordSize"
+	writeCache = "writeCache"
+	mountpoint = "mountpoint"
 )
 
-var clientCmd = &cobra.Command{
-	Use:   "client",
-	Short: "Start entangle client instance",
+var stfsCmd = &cobra.Command{
+	Use:   "stfs",
+	Short: "The stfs backend allows using a tape drive or tar file as a backend.",
 	RunE: func(cmd *cobra.Command, args []string) error {
 
-		os.MkdirAll(viper.GetString(mountpointFlag), os.ModePerm)
+		fmt.Println(viper.GetString(driver))
+		fmt.Println(viper.GetInt(recordSize))
+		fmt.Println(viper.GetString(writeCache))
+		fmt.Println(viper.GetString(mountpoint))
+		fmt.Println(viper.GetString(metadataFlag))
 
-		onOpen := make(chan struct{})
-		manager := handlers.NewClientManager(func() {
-			onOpen <- struct{}{}
-		})
-
-		cm := networking.NewConnectionManager(manager)
+		os.MkdirAll(viper.GetString(mountpoint), os.ModePerm)
 
 		l := logging.NewJSONLogger(viper.GetInt(verboseFlag))
-		boil.DebugMode = true
-		boil.DebugWriter = os.Stderr
-
-		rmFile := networking.NewRemoteFile(*cm)
-
-		callback := callbacks.NewCallback(l)
-
-		go cm.Connect(viper.GetString(signalFlag), viper.GetString(communityKey), callback.GetClientCallback(*rmFile), callback.GetErrorCallback(), l)
-
-		<-onOpen
 
 		mt := mtio.MagneticTapeIO{}
+		tm := tape.NewTapeManager(
+			viper.GetString(driver),
+			mt,
+			viper.GetInt(recordSize),
+			false,
+		)
 
 		if err := os.MkdirAll(filepath.Dir(viper.GetString(metadataFlag)), os.ModePerm); err != nil {
 			panic(err)
@@ -77,32 +70,14 @@ var clientCmd = &cobra.Command{
 			Compression: config.NoneKey,
 			Encryption:  config.NoneKey,
 			Signature:   config.NoneKey,
-			RecordSize:  viper.GetInt(recordSizeFlag),
+			RecordSize:  viper.GetInt(recordSize),
 		}
 		backendConfig := config.BackendConfig{
-			GetWriter: func() (config.DriveWriterConfig, error) {
-				if err := rmFile.Open(false); err != nil {
-					return config.DriveWriterConfig{}, err
-				}
+			GetWriter:   tm.GetWriter,
+			CloseWriter: tm.Close,
 
-				return config.DriveWriterConfig{
-					DriveIsRegular: true,
-					Drive:          rmFile,
-				}, nil
-			},
-			CloseWriter: rmFile.Close,
-
-			GetReader: func() (config.DriveReaderConfig, error) {
-				if err := rmFile.Open(true); err != nil {
-					return config.DriveReaderConfig{}, err
-				}
-
-				return config.DriveReaderConfig{
-					DriveIsRegular: true,
-					Drive:          rmFile,
-				}, nil
-			},
-			CloseReader: rmFile.Close,
+			GetReader:   tm.GetReader,
+			CloseReader: tm.Close,
 
 			MagneticTapeIO: mt,
 		}
@@ -140,7 +115,7 @@ var clientCmd = &cobra.Command{
 			config.CompressionLevelFastestKey,
 			func() (cache.WriteCache, func() error, error) {
 				return cache.NewCacheWrite(
-					viper.GetString(writeCacheFlag),
+					viper.GetString(writeCache),
 					config.WriteCacheTypeFile,
 				)
 			},
@@ -168,12 +143,15 @@ var clientCmd = &cobra.Command{
 			panic(err)
 		}
 
-		serve := filesystem.NewFileSystem(posix.CurrentUid(), posix.CurrentGid(), viper.GetString(mountpointFlag), root, l, fs)
-		cfg := &fuse.MountConfig{}
+		serve := filesystem.NewFileSystem(posix.CurrentUid(), posix.CurrentGid(), viper.GetString(mountpoint), root, l, fs)
+		cfg := &fuse.MountConfig{
+			ReadOnly:                  false,
+			DisableDefaultPermissions: false,
+		}
 
-		fuse.Unmount(viper.GetString(mountpointFlag))
+		fuse.Unmount(viper.GetString(mountpoint))
 
-		mfs, err := fuse.Mount(viper.GetString(mountpointFlag), serve, cfg)
+		mfs, err := fuse.Mount(viper.GetString(mountpoint), serve, cfg)
 		if err != nil {
 			log.Fatalf("Mount: %v", err)
 		}
@@ -187,6 +165,7 @@ var clientCmd = &cobra.Command{
 }
 
 func init() {
+
 	homeDir, err := os.UserHomeDir()
 	if err != nil {
 		panic(err)
@@ -194,14 +173,24 @@ func init() {
 
 	mountPath := filepath.Join(homeDir, filepath.Join("Documents", "mount"))
 
-	clientCmd.Flags().String(mountpointFlag, mountPath, "Mountpoint to use for FUSE")
-	clientCmd.Flags().Int(recordSizeFlag, 20, "Amount of 512-bit blocks per second")
-	clientCmd.Flags().String(writeCacheFlag, filepath.Join(os.TempDir(), "stfs-write-cache"), "Directory to use for write cache")
+	stfsCmd.Flags().String(mountpoint, mountPath, "Mountpoint to use for FUSE")
 
-	if err := viper.BindPFlags(clientCmd.Flags()); err != nil {
+	dir, err := os.MkdirTemp(os.TempDir(), "serverfiles-*")
+	if err != nil {
+		panic(err)
+	}
+
+	defaultDrive := filepath.Join(dir, "serverfile.tar")
+
+	stfsCmd.Flags().String(driver, defaultDrive, "Tape drive or tar archive to use as backend")
+	stfsCmd.Flags().Int(recordSize, 20, "Amount of 512-bit blocks per second")
+	stfsCmd.Flags().String(writeCache, filepath.Join(os.TempDir(), "stfs-write-cache"), "Directory to use for write cache")
+
+	if err := viper.BindPFlags(stfsCmd.Flags()); err != nil {
 		log.Fatal("could not bind flags:", err)
 	}
+
 	viper.AutomaticEnv()
 
-	rootCmd.AddCommand(clientCmd)
+	mountCmd.AddCommand(stfsCmd)
 }
