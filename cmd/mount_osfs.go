@@ -22,7 +22,7 @@ const (
 
 var osfsCmd = &cobra.Command{
 	Use:   "osfs",
-	Short: "The osfs backend alles using the default linux filesystem as a backend.",
+	Short: "The osfs backend allows using the default linux filesystem as a backend.",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		logger := logging.NewJSONLogger(viper.GetInt(verboseFlag))
 
@@ -71,7 +71,6 @@ func init() {
 	if err := viper.BindPFlags(osfsCmd.Flags()); err != nil {
 		log.Fatal("could not bind flags:", err)
 	}
-	viper.SetEnvPrefix("sile-fystem")
 	viper.AutomaticEnv()
 
 	mountCmd.AddCommand(osfsCmd)
