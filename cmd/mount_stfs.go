@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"os"
 	"path/filepath"
@@ -33,12 +32,6 @@ var stfsCmd = &cobra.Command{
 	Use:   "stfs",
 	Short: "The stfs backend allows using a tape drive or tar file as a backend.",
 	RunE: func(cmd *cobra.Command, args []string) error {
-
-		fmt.Println(viper.GetString(driver))
-		fmt.Println(viper.GetInt(recordSize))
-		fmt.Println(viper.GetString(writeCache))
-		fmt.Println(viper.GetString(mountpoint))
-		fmt.Println(viper.GetString(metadataFlag))
 
 		os.MkdirAll(viper.GetString(mountpoint), os.ModePerm)
 
@@ -155,6 +148,8 @@ var stfsCmd = &cobra.Command{
 		if err != nil {
 			log.Fatalf("Mount: %v", err)
 		}
+
+		log.Println("Mounted STFS")
 
 		if err := mfs.Join(context.Background()); err != nil {
 			log.Fatalf("Join %v", err)
