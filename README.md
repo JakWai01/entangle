@@ -10,7 +10,7 @@ A distributed peer-to-peer filesystem.
 
 ## Reference 
 
-```bash
+```shell
 A CLI to serve or mount a filesystem.
         For more information, please visit https://github.com/alphahorizonio/entangle
 
@@ -95,7 +95,7 @@ Seek(offset int64, whence int) (int64, error)
 
 ## Installation
 
-Installation is either possible by downloading a released binary or installing it with Go via: 
+Installation is either possible by downloading a released binary or installing it via 
 
 ```bash
 go install github.com/alphahorizonio/entangle@latest
