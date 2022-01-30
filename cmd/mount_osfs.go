@@ -15,11 +15,6 @@ import (
 	"github.com/spf13/viper"
 )
 
-const (
-	storageFlag = "storage"
-	mountpointF = "mountp"
-)
-
 var osfsCmd = &cobra.Command{
 	Use:   "osfs",
 	Short: "The osfs backend allows using the default linux filesystem as a backend.",
@@ -27,18 +22,18 @@ var osfsCmd = &cobra.Command{
 		logger := logging.NewJSONLogger(viper.GetInt(verboseFlag))
 
 		os.MkdirAll(viper.GetString(storageFlag), os.ModePerm)
-		os.MkdirAll(viper.GetString(mountpointF), os.ModePerm)
+		os.MkdirAll(viper.GetString(mountpointFlag), os.ModePerm)
 
-		serve := filesystem.NewFileSystem(posix.CurrentUid(), posix.CurrentGid(), viper.GetString(mountpointF), viper.GetString(storageFlag), logger, afero.NewOsFs())
+		serve := filesystem.NewFileSystem(posix.CurrentUid(), posix.CurrentGid(), viper.GetString(mountpointFlag), viper.GetString(storageFlag), logger, afero.NewOsFs())
 
 		cfg := &fuse.MountConfig{
 			ReadOnly:                  false,
 			DisableDefaultPermissions: false,
 		}
 
-		fuse.Unmount(viper.GetString(mountpointF))
+		fuse.Unmount(viper.GetString(mountpointFlag))
 
-		mfs, err := fuse.Mount(viper.GetString(mountpointF), serve, cfg)
+		mfs, err := fuse.Mount(viper.GetString(mountpointFlag), serve, cfg)
 		if err != nil {
 			log.Fatalf("Mount: %v", err)
 		}
@@ -52,15 +47,6 @@ var osfsCmd = &cobra.Command{
 }
 
 func init() {
-	homeDir, err := os.UserHomeDir()
-	if err != nil {
-		panic(err)
-	}
-
-	mountPath := filepath.Join(homeDir, filepath.Join("Documents", "mount"))
-
-	osfsCmd.Flags().String(mountpointF, mountPath, "Mountpoint to use for FUSE")
-
 	dir, err := os.MkdirTemp(os.TempDir(), "drive-*")
 	if err != nil {
 		panic(err)
@@ -68,6 +54,7 @@ func init() {
 
 	defaultStorage := filepath.Join(dir, "storage")
 	osfsCmd.Flags().String(storageFlag, defaultStorage, "Declare folder where data is stored")
+
 	if err := viper.BindPFlags(osfsCmd.Flags()); err != nil {
 		log.Fatal("could not bind flags:", err)
 	}

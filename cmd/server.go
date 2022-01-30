@@ -14,10 +14,6 @@ import (
 	"github.com/alphahorizonio/libentangle/pkg/networking"
 )
 
-const (
-	driveFlag = "drive"
-)
-
 var serverCmd = &cobra.Command{
 	Use:   "server",
 	Short: "Start entangle server instance",

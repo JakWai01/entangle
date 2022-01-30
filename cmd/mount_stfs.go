@@ -21,27 +21,20 @@ import (
 	"github.com/spf13/viper"
 )
 
-const (
-	driver     = "driver"
-	recordSize = "recordSize"
-	writeCache = "writeCache"
-	mountpoint = "mountpoint"
-)
-
 var stfsCmd = &cobra.Command{
 	Use:   "stfs",
 	Short: "The stfs backend allows using a tape drive or tar file as a backend.",
 	RunE: func(cmd *cobra.Command, args []string) error {
 
-		os.MkdirAll(viper.GetString(mountpoint), os.ModePerm)
+		os.MkdirAll(viper.GetString(mountpointFlag), os.ModePerm)
 
 		l := logging.NewJSONLogger(viper.GetInt(verboseFlag))
 
 		mt := mtio.MagneticTapeIO{}
 		tm := tape.NewTapeManager(
-			viper.GetString(driver),
+			viper.GetString(driveFlag),
 			mt,
-			viper.GetInt(recordSize),
+			viper.GetInt(recordSizeFlag),
 			false,
 		)
 
@@ -63,7 +56,7 @@ var stfsCmd = &cobra.Command{
 			Compression: config.NoneKey,
 			Encryption:  config.NoneKey,
 			Signature:   config.NoneKey,
-			RecordSize:  viper.GetInt(recordSize),
+			RecordSize:  viper.GetInt(recordSizeFlag),
 		}
 		backendConfig := config.BackendConfig{
 			GetWriter:   tm.GetWriter,
@@ -108,7 +101,7 @@ var stfsCmd = &cobra.Command{
 			config.CompressionLevelFastestKey,
 			func() (cache.WriteCache, func() error, error) {
 				return cache.NewCacheWrite(
-					viper.GetString(writeCache),
+					viper.GetString(writeCacheFlag),
 					config.WriteCacheTypeFile,
 				)
 			},
@@ -136,15 +129,15 @@ var stfsCmd = &cobra.Command{
 			panic(err)
 		}
 
-		serve := filesystem.NewFileSystem(posix.CurrentUid(), posix.CurrentGid(), viper.GetString(mountpoint), root, l, fs)
+		serve := filesystem.NewFileSystem(posix.CurrentUid(), posix.CurrentGid(), viper.GetString(mountpointFlag), root, l, fs)
 		cfg := &fuse.MountConfig{
 			ReadOnly:                  false,
 			DisableDefaultPermissions: false,
 		}
 
-		fuse.Unmount(viper.GetString(mountpoint))
+		fuse.Unmount(viper.GetString(mountpointFlag))
 
-		mfs, err := fuse.Mount(viper.GetString(mountpoint), serve, cfg)
+		mfs, err := fuse.Mount(viper.GetString(mountpointFlag), serve, cfg)
 		if err != nil {
 			log.Fatalf("Mount: %v", err)
 		}
@@ -160,16 +153,6 @@ var stfsCmd = &cobra.Command{
 }
 
 func init() {
-
-	homeDir, err := os.UserHomeDir()
-	if err != nil {
-		panic(err)
-	}
-
-	mountPath := filepath.Join(homeDir, filepath.Join("Documents", "mount"))
-
-	stfsCmd.Flags().String(mountpoint, mountPath, "Mountpoint to use for FUSE")
-
 	dir, err := os.MkdirTemp(os.TempDir(), "serverfiles-*")
 	if err != nil {
 		panic(err)
@@ -177,9 +160,9 @@ func init() {
 
 	defaultDrive := filepath.Join(dir, "serverfile.tar")
 
-	stfsCmd.Flags().String(driver, defaultDrive, "Tape drive or tar archive to use as backend")
-	stfsCmd.Flags().Int(recordSize, 20, "Amount of 512-bit blocks per second")
-	stfsCmd.Flags().String(writeCache, filepath.Join(os.TempDir(), "stfs-write-cache"), "Directory to use for write cache")
+	stfsCmd.Flags().String(driveFlag, defaultDrive, "Tape drive or tar archive to use as backend")
+	stfsCmd.Flags().Int(recordSizeFlag, 20, "Amount of 512-bit blocks per second")
+	stfsCmd.Flags().String(writeCacheFlag, filepath.Join(os.TempDir(), "stfs-write-cache"), "Directory to use for write cache")
 
 	if err := viper.BindPFlags(stfsCmd.Flags()); err != nil {
 		log.Fatal("could not bind flags:", err)

@@ -25,12 +25,6 @@ import (
 	"github.com/alphahorizonio/libentangle/pkg/networking"
 )
 
-const (
-	mountpointFlag = "mountpoint"
-	recordSizeFlag = "recordSize"
-	writeCacheFlag = "writeCache"
-)
-
 var clientCmd = &cobra.Command{
 	Use:   "client",
 	Short: "Start entangle client instance",
@@ -187,14 +181,6 @@ var clientCmd = &cobra.Command{
 }
 
 func init() {
-	homeDir, err := os.UserHomeDir()
-	if err != nil {
-		panic(err)
-	}
-
-	mountPath := filepath.Join(homeDir, filepath.Join("Documents", "mount"))
-
-	clientCmd.Flags().String(mountpointFlag, mountPath, "Mountpoint to use for FUSE")
 	clientCmd.Flags().Int(recordSizeFlag, 20, "Amount of 512-bit blocks per second")
 	clientCmd.Flags().String(writeCacheFlag, filepath.Join(os.TempDir(), "stfs-write-cache"), "Directory to use for write cache")
 

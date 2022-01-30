@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"fmt"
 	"log"
 	"os"
 	"path/filepath"
@@ -15,6 +14,12 @@ const (
 	verboseFlag  = "verbose"
 	metadataFlag = "metadata"
 	signalFlag   = "signal"
+
+	mountpointFlag = "mountpoint"
+	recordSizeFlag = "recordSize"
+	writeCacheFlag = "writeCache"
+	storageFlag    = "storage"
+	driveFlag      = "drive"
 )
 
 var rootCmd = &cobra.Command{
@@ -33,9 +38,18 @@ func Execute() error {
 	metadataPath := filepath.Join(home, ".local", "share", "stfs", "var", "lib", "stfs", "metadata.sqlite")
 
 	rootCmd.PersistentFlags().StringP(communityKey, "c", "test", "Community to join")
-	rootCmd.PersistentFlags().IntP(verboseFlag, "v", 2, fmt.Sprintf("Verbosity level (default %v)", 2))
+	rootCmd.PersistentFlags().IntP(verboseFlag, "v", 2, "Verbosity level")
 	rootCmd.PersistentFlags().StringP(metadataFlag, "m", metadataPath, "Metadata database to use")
 	rootCmd.PersistentFlags().StringP(signalFlag, "s", "0.0.0.0:9090", "Address of signaling service")
+
+	homeDir, err := os.UserHomeDir()
+	if err != nil {
+		panic(err)
+	}
+
+	mountPath := filepath.Join(homeDir, filepath.Join("Documents", "mount"))
+
+	rootCmd.PersistentFlags().StringP(mountpointFlag, "p", mountPath, "Mountpoint to use for FUSE")
 
 	if err := viper.BindPFlags(rootCmd.PersistentFlags()); err != nil {
 		log.Fatal("could not bind flags:", err)
