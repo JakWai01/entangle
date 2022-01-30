@@ -95,6 +95,8 @@ Seek(offset int64, whence int) (int64, error)
 
 ## Installation
 
+Installation is either possible by downloading a released binary or installing it with Go via: 
+
 ```bash
 go install github.com/alphahorizonio/entangle@latest
 ```
@@ -111,6 +113,12 @@ Start a client to mount the fuse and access the remote backend.
 
 ```shell
 entangle client
+```
+
+It is also possible to just mount one of the possible `afero` backends locally without using `libentangle` at all. This can be achieved by using the `mount` command.
+
+```shell
+entangle mount stfs
 ```
 
 For more information, consider using `entangle --help`.
