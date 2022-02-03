@@ -22,7 +22,7 @@ var memmapfsCmd = &cobra.Command{
 
 		os.MkdirAll(viper.GetString(mountpointFlag), os.ModePerm)
 
-		serve := filesystem.NewFileSystem(posix.CurrentUid(), posix.CurrentGid(), viper.GetString(mountpointFlag), "", logger, afero.NewMemMapFs())
+		serve := filesystem.NewFileSystem(posix.CurrentUid(), posix.CurrentGid(), viper.GetString(mountpointFlag), "", logger, afero.NewMemMapFs(), viper.GetBool(syncFlag))
 
 		cfg := &fuse.MountConfig{
 			ReadOnly:                  false,

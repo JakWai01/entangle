@@ -20,6 +20,7 @@ const (
 	writeCacheFlag = "writeCache"
 	storageFlag    = "storage"
 	driveFlag      = "drive"
+	syncFlag       = "sync"
 )
 
 var rootCmd = &cobra.Command{
@@ -40,7 +41,8 @@ func Execute() error {
 	rootCmd.PersistentFlags().StringP(communityKey, "c", "test", "Community to join")
 	rootCmd.PersistentFlags().IntP(verboseFlag, "v", 2, "Verbosity level")
 	rootCmd.PersistentFlags().StringP(metadataFlag, "m", metadataPath, "Metadata database to use")
-	rootCmd.PersistentFlags().StringP(signalFlag, "s", "0.0.0.0:9090", "Address of signaling service")
+	rootCmd.PersistentFlags().StringP(signalFlag, "S", "0.0.0.0:9090", "Address of signaling service")
+	rootCmd.PersistentFlags().BoolP(syncFlag, "s", true, "Start in synchronized mode")
 
 	homeDir, err := os.UserHomeDir()
 	if err != nil {
