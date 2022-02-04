@@ -25,12 +25,13 @@ Available Commands:
   server      Start entangle server instance
 
 Flags:
-  -c, --community string    Community to join 
+  -c, --community string    Community to join (default "test")
   -h, --help                help for entangle
-  -m, --metadata string     Metadata database to use 
-  -p, --mountpoint string   Mountpoint to use for FUSE 
-  -s, --signal string       Address of signaling service 
-  -v, --verbose int         Verbosity level
+  -m, --metadata string     Metadata database to use (default "/home/jakobwaibel/.local/share/stfs/var/lib/stfs/metadata.sqlite")
+  -p, --mountpoint string   Mountpoint to use for FUSE (default "/home/jakobwaibel/Documents/mount")
+  -S, --signal string       Address of signaling service (default "0.0.0.0:9090")
+  -s, --sync                Start in synchronized mode (default true)
+  -v, --verbose int         Verbosity level (default 2)
 
 Use "entangle [command] --help" for more information about a command.
 ```
