@@ -3,6 +3,8 @@ module github.com/alphahorizonio/entangle
 go 1.17
 
 require (
+	github.com/JakWai01/sile-fystem v0.1.4-alpha.0.20220206122641-e096c326e698
+	github.com/alphahorizonio/libentangle v0.1.4-alpha.0.20220203191158-be4e3279bb7c
 	github.com/fclairamb/go-log v0.2.0
 	github.com/jacobsa/fuse v0.0.0-20220130133955-108387eec147
 	github.com/pojntfx/stfs v0.0.0-20220131001904-142c467bbf0c
@@ -86,11 +88,7 @@ require (
 )
 
 require (
-	github.com/JakWai01/sile-fystem v0.1.4-alpha.0.20220203190859-ee74b1af0b5b // indirect
-	github.com/alphahorizonio/libentangle v0.1.4-alpha.0.20220203191158-be4e3279bb7c // indirect
 	github.com/go-gorp/gorp/v3 v3.0.2 // indirect
 	github.com/pion/interceptor v0.1.7 // indirect
 	golang.org/x/net v0.0.0-20220127200216-cd36cc0744dd // indirect
 )
-
-replace github.com/JakWai01/sile-fystem => /home/jakobwaibel/Documents/Projects/sile-fystem
