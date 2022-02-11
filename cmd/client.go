@@ -40,7 +40,7 @@ var clientCmd = &cobra.Command{
 		cm := networking.NewConnectionManager(manager)
 
 		l := logging.NewJSONLogger(viper.GetInt(verboseFlag))
-		boil.DebugMode = true
+		boil.DebugMode = false
 		boil.DebugWriter = os.Stderr
 
 		rmFile := networking.NewRemoteFile(*cm)
