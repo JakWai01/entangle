@@ -47,7 +47,7 @@ var clientCmd = &cobra.Command{
 
 		callback := callbacks.NewCallback(l)
 
-		go cm.Connect(viper.GetString(signalFlag), viper.GetString(communityKey), callback.GetClientCallback(*rmFile), callback.GetErrorCallback(), l)
+		go cm.Connect(viper.GetString(signalFlag), viper.GetString(communityKey), callback.GetClientCallback(*rmFile), l)
 
 		<-onOpen
 
